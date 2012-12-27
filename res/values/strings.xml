@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">This app comes from dalang studio!</string>
+    <string name="app_name">GameReminder</string>    
+    <string name="s_nbalistview_btn">2012&#8211;2013赛季NBA直播时刻表</string>
+    <string name="dialog_hint">Add an event to your calendar</string>
+    <string name="seekbar_hint">Reminder me in advance of %1$d hours</string>
+
+</resources>
