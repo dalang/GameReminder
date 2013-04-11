@@ -31,4 +31,4 @@ The following libraries are included in this project.
 * [ViewPagerIndicator](http://viewpagerindicator.com/)
 * [android-comboseekbar](https://github.com/karabaralex/android-comboseekbar)
 
-![first img](http://github.com/dalang/gamereminder/raw/master/screenshot/01.png)
+![first img](http://github.com/dalang/gamereminder/raw/master/screenshot/01.jpg)
