@@ -1,6 +1,13 @@
-package anjoy.game.reminder;
+package tk.dalang.gaminder.elements;
 
 import java.util.Date;
+
+/**
+ * GameReminder
+ * 
+ * @author <a href="http://weibo.com/iDalang">dalang</a>
+ * @version Apr, 11 2013
+ */
 
 public class Game {
 	public int _id;

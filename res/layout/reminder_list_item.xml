@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/reminder_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dip"
+        android:lines="1"
+        android:text="title"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/holo_blue_dark"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/reminder_item_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="5dip"
+        android:lines="1"
+        android:text="1 hour age"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/reminder_item_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reminder_item_title"
+        android:layout_marginLeft="5dip"
+        android:layout_marginRight="5dip"
+        android:gravity="center"
+        android:text="Androodban"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+         />
+
+    <TextView
+        android:id="@+id/reminder_item_datetime"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/reminder_item_time"
+        android:layout_margin="5dip"
+        android:layout_toLeftOf="@+id/reminder_item_time"
+        android:layout_toRightOf="@+id/reminder_item_title"
+        android:gravity="center"
+        android:lines="1"
+        android:text="2013-04-07"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</RelativeLayout>

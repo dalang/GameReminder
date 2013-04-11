@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item android:id="@+id/menu_delete_event"
+        android:title="@string/menu_cancel_event"/>
+    <item android:id="@+id/menu_edit_reminder"
+        android:title="@string/menu_edit_reminder"/>
+    <item android:id="@+id/menu_edit_event"
+        android:title="@string/menu_edit_event"/>
+
+</menu>

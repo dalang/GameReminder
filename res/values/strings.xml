@@ -1,10 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="hello">This app comes from dalang studio!</string>
     <string name="app_name">GameReminder</string>    
     <string name="s_nbalistview_btn">2012&#8211;2013赛季NBA直播时刻表</string>
-    <string name="dialog_hint">Add an event to your calendar</string>
-    <string name="seekbar_hint">Reminder me in advance of %1$d hours</string>
+    <string name="dialog_select_calendar">选择日历</string>
+    <string name="seekbar_hint">比赛开始前%1$s提醒我</string>
 
+    <string-array name="section_titles">
+        <item >新浪NBA数据</item>
+        <item >已设提醒</item>
+    </string-array>
+    
+    <string-array name="nba_game_types">
+        <item >undef</item>
+        <item >季前赛</item>
+        <item >常规赛</item>
+        <item >全明星赛</item>
+        <item >季后赛</item>
+        <item >总决赛</item>
+    </string-array>
+        
+    <string-array name="reminder_times">
+        <item >15 分钟</item>
+        <item >30 分钟</item>
+        <item >1 小时</item>
+        <item >2 小时</item>
+        <item >1 天</item>
+    </string-array>
+    
+    <string name="error">哎呀，出错了!</string>
+    <string name="error_noemailapp">不好意思，你未安装邮件客户端，无法通过邮件反馈。您可以通过PC发送反馈邮件到【dalang1987@gmail.com】。非常感谢!</string>
+    
+    <!-- title string -->
+    <string name="title_about">关于</string>
+    <string name="title_settings">设置</string>
+    
+    <!-- menu string -->
+    <string name="menu_settings">设置</string>
+    <string name="menu_about">关于</string>
+    <string name="menu_feedback">反馈</string>
+    <string name="menu_edit_reminder">编辑提醒时间</string>
+    <string name="menu_edit_event">编辑日历事件</string>
+    <string name="menu_add_event">添加提醒到日历</string>
+    <string name="menu_cancel_event">取消日历中的提醒</string>
+    
+    <!-- preferences string -->
+    <string name="pref_title_auto_fresh">自动更新时间</string>
+    <string name="pref_key_auto_fresh">pref_key_auto_fresh</string>
+
+    <string name="pref_title_default_calendar">默认日历</string>
+    <string name="pref_dialog_title_default_calendar">设置默认日历</string>
+    <string name="pref_key_default_calendar">pref_key_default_calendar</string>
+    
+    <string name="pref_title_atauthor">\@iDalang</string>
+    <string name="pref_summary_atauthor">访问作者微博</string>
+    
+    <string name="pref_title_opensrouce">开放源代码许可</string>
+    
+    <string name="pref_key_version">pref_key_version</string>
+    <string name="pref_title_version">版本</string>
+    <string name="pref_summary_version">V<xliff:g id="VERSION_NAME">%1$s</xliff:g></string>
+    
+    <string-array name="auto_fresh_item">
+        <item >1 day</item>
+        <item >3 day</item>
+        <item >1 week</item>
+    </string-array>
+    
+    <string-array name="auto_fresh_item_value">
+        <item >1</item>
+        <item >3</item>
+        <item >7</item>
+    </string-array>
+    <string name="default_auto_fresh"></string>
+    
+    <!-- reminder dialog -->
+    <string name="reminder_dialog_title">设置提醒</string>
+    <string name="add_event">添加进日历</string>
+    
 </resources>

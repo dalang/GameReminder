@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<resources>
+  <!--Replace ID with your tracking ID-->
+  <string name="ga_trackingId">UA-39821299-1</string>
+
+  <!-- use for debug -->
+  <bool name="ga_debug">true</bool>
+ 
+  <!--Enable Activity tracking-->
+  <bool name="ga_autoActivityTracking">false</bool>
+  
+  <!--Enable automatic exception tracking-->
+  <bool name="ga_reportUncaughtExceptions">true</bool>  
+  
+</resources>
+
