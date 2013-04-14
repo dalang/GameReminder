@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -296,19 +297,25 @@ public class SinaListFragment extends AbsBaseListFragment implements OnItemLongC
 			holder.guest_tlogoImg.setBackgroundResource(WebParserUtils.getTeamLogoId((String)game.guest));
 			holder.home_tlogoImg.setBackgroundResource(WebParserUtils.getTeamLogoId((String)game.host));
 			holder.channelsTxt.setText((String)game.chanls);
-			Date date = game.dt;
-			Date curdate = new Date();
-			String datestr = new SimpleDateFormat("MM-dd", Locale.US).format(date);
-			String timestr = new SimpleDateFormat("HH:mm", Locale.US).format(date);
+			Date beginDate = game.dt;
+			String datestr = new SimpleDateFormat("MM-dd", Locale.US).format(beginDate);
+			String timestr = new SimpleDateFormat("HH:mm", Locale.US).format(beginDate);
 			holder.dateTxt.setText(datestr);
 			holder.timeTxt.setText(timestr);
 
-			if (date.before(curdate))
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(beginDate);
+			cal.add(Calendar.MINUTE, 135); // 目前時間加2.25小時   
+			Date endDate = cal.getTime();
+			Date curDate = new Date();
+			if (curDate.after(endDate))
 				holder.statusTxt.setText("完场");
-			else if (date.after(curdate))
+			else if (curDate.before(beginDate))
 				holder.statusTxt.setText("未赛");
-			if (date.equals(curdate))
-				holder.statusTxt.setText("ING");
+			//else if (curDate.after(beginDate) && curDate.before(endDate))
+			else
+				holder.statusTxt.setText("比赛中");
+				
 			
 			String [] types = getResources().getStringArray(R.array.nba_game_types);
 			holder.typeTxt.setText(types[game.type]);

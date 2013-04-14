@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2013 HalZhang
+ * Copyright (C) 2013 dalang
  */
 
 package tk.dalang.gaminder;
