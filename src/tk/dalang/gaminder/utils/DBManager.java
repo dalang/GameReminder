@@ -36,8 +36,20 @@ public class DBManager {
 	public void addList(List<Game> games) {
 		db.beginTransaction();
 		try {
+			Date minDate = new Date();
+			minDate.setDate(minDate.getDate() - 1);
+
 			for (Game game: games) {
-				db.execSQL("INSERT INTO sinagame VALUES(null, ?, ?, ?, ?, ?, ?, ?)", new Object[]{game.guest, game.host, DateUtils.getDateTimeString(game.dt), game.type, game.chanls, game.isEvent, game.eventId});
+				if (game.dt.after(minDate)) {
+					// UPDATE (+ INSERT if UPDATE fails). Less code = fewer bugs.
+			        ContentValues cv = new ContentValues();  
+			    	cv.put("chanls", game.chanls);  
+
+			        int row = db.update("sinagame", cv, "dt = ? AND guest = ?", new String[]{DateUtils.getDateTimeString(game.dt), game.guest});  
+			        if (row == 0) {
+			        	db.execSQL("INSERT INTO sinagame VALUES(null, ?, ?, ?, ?, ?, ?, ?)", new Object[]{game.guest, game.host, DateUtils.getDateTimeString(game.dt), game.type, game.chanls, game.isEvent, game.eventId});
+			        }
+				}
 			}
 			db.setTransactionSuccessful();
 		} finally {
@@ -115,17 +127,17 @@ public class DBManager {
     }
 	
 	public Cursor queryTheCursor() {
-		Cursor c = db.rawQuery("SELECT * FROM sinagame", null);
+		Cursor c = db.rawQuery("SELECT * FROM sinagame ORDER BY dt ASC", null);
 		return c;
 	}
 	
 	public Cursor queryTheCursor(Date date) {
-		Cursor c = db.rawQuery("SELECT * FROM sinagame WHERE dt > datetime('now','start of day')", null);
+		Cursor c = db.rawQuery("SELECT * FROM sinagame WHERE dt > datetime('now','start of day') ORDER BY dt ASC", null);
 		return c;
 	}
 	
 	public Cursor queryForEvents() {
-		Cursor c = db.rawQuery("SELECT eventid FROM sinagame WHERE evented = 1", null);
+		Cursor c = db.rawQuery("SELECT eventid FROM sinagame WHERE evented = 1 ORDER BY dt ASC", null);
 		return c;
 	}
 	

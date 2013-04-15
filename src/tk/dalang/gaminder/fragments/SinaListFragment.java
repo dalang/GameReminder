@@ -202,10 +202,10 @@ public class SinaListFragment extends AbsBaseListFragment implements OnItemLongC
 		        	SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(getActivity());
 			    	String autoFresh =pre.getString(getResources().getString(R.string.pref_key_auto_fresh), "0");
 			    	int int_autoFresh = Integer.parseInt(autoFresh);
-			    	Log.d(LOG_TAG, curDate.toString());
-			    	curDate.setDate(curDate.getDate() - int_autoFresh);
-			    	Log.d(LOG_TAG, curDate.toString());
-					if (null != dt && !dt.after(curDate)) {
+			    	Log.d(LOG_TAG, "max date in sqlite:" + dt.toString());
+			    	dt.setDate(dt.getDate() - int_autoFresh);
+			    	Log.d(LOG_TAG, "date to be compare:" + dt.toString());
+					if (null != dt && dt.before(curDate)) {
 						List<Game> tmpList = WebParserUtils.parserSinaHtml(params[0]);
 						if (tmpList != null && tmpList.size() > 0) {
 							mDBMgr.addList(tmpList);
@@ -314,7 +314,7 @@ public class SinaListFragment extends AbsBaseListFragment implements OnItemLongC
 				holder.statusTxt.setText("未赛");
 			//else if (curDate.after(beginDate) && curDate.before(endDate))
 			else
-				holder.statusTxt.setText("比赛中");
+				holder.statusTxt.setText("赛中");
 				
 			
 			String [] types = getResources().getStringArray(R.array.nba_game_types);
@@ -379,10 +379,7 @@ public class SinaListFragment extends AbsBaseListFragment implements OnItemLongC
 					int minutes = 0;
 					if (mycsb != null) {
 						String str = labels.get(mycsb.getSelectedId());
-						Log.d(LOG_TAG, "!!!!!" + str);
 						String [] ss = str.split(" ");
-						Log.d(LOG_TAG, "!!!!!" + ss[0]);
-						Log.d(LOG_TAG, "!!!!!" + ss[1]);
 						
 						if (ss[1].equals("分钟")) {
 							minutes = Integer.parseInt(ss[0]);
@@ -392,7 +389,6 @@ public class SinaListFragment extends AbsBaseListFragment implements OnItemLongC
 							minutes = Integer.parseInt(ss[0]) * 1440;
 						}
 					}
-					Log.d(LOG_TAG, "####" + minutes);
 					if (CalendarUtils.addEvent(getActivity(), mNbaData.get(position), minutes, mSelectedCalendarId)) {
 						SqliteTask updateTask = new SqliteTask();
 						updateTask.execute(mNbaData.get(position));
