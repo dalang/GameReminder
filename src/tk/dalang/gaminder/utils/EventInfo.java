@@ -1,4 +1,7 @@
 package tk.dalang.gaminder.utils;
+
+import java.util.Comparator;
+
 /**
  * GameReminder
  * <p>
@@ -6,7 +9,7 @@ package tk.dalang.gaminder.utils;
  * @author <a href="http://weibo.com/iDalang">dalang</a>
  * @version Apr 9, 2013
  */
-public class EventInfo {
+public class EventInfo implements Comparable<EventInfo>{
 	public Long eventId;
 	public String title;
 	public String description;
@@ -22,5 +25,10 @@ public class EventInfo {
 		this.location = location;
 		this.startDT = startDT;
 		this.reminderTime = reminderTime;
+	}
+
+	@Override
+	public int compareTo(EventInfo arg0) {
+		return arg0.startDT.compareTo(this.startDT);
 	}
 }

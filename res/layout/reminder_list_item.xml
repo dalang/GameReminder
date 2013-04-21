@@ -35,6 +35,8 @@
         android:layout_marginRight="5dip"
         android:gravity="center"
         android:text="Androodban"
+        android:lines="1"
+        android:ellipsize="end"
         android:textAppearance="?android:attr/textAppearanceLarge"
          />
 

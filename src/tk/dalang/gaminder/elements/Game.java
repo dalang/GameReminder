@@ -9,26 +9,45 @@ import java.util.Date;
  * @version Apr, 11 2013
  */
 
-public class Game {
+abstract public class Game implements IGame {
 	public int _id;
 	public String guest;
 	public String host;
 	public Date dt;
 	public int type;
-	public String chanls;
 	public Boolean isEvent;
 	public long eventId;
 	
-	public Game() {
+	@Override
+	public String getGuest() {
+		return this.guest;
+	}
+
+	@Override
+	public String getHost() {
+		return this.host;
 	}
 	
-	public Game(String guest, String host, Date dt, int type, String chanls) {
-		this.guest = guest;
-		this.host = host;
-		this.dt = dt;
-		this.type = type;
-		this.chanls = chanls;
-		this.isEvent = false;
-		this.eventId = 0;
+
+	@Override
+	public Date getDate() {
+		return this.dt;
 	}
+
+	@Override
+	public int getType() {
+		return this.type;
+	}
+
+	@Override
+	public boolean getIsEvent() {
+		return this.isEvent;
+	}
+
+	@Override
+	public long getEventId() {
+		return this.eventId;
+	}
+
+
 }

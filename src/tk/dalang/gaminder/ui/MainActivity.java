@@ -2,6 +2,7 @@
 package tk.dalang.gaminder.ui;
 
 import tk.dalang.gaminder.R;
+import tk.dalang.gaminder.fragments.AzhiboListFragment;
 import tk.dalang.gaminder.fragments.ReminderListFragment;
 import tk.dalang.gaminder.fragments.SinaListFragment;
 import tk.dalang.gaminder.utils.ActivityUtils;
@@ -102,9 +103,10 @@ public class MainActivity extends BaseFragmentActivity {
                     fragment = new SinaListFragment();
                     break;
                 case 1:
-                    fragment = new ReminderListFragment();
+                    fragment = new AzhiboListFragment();
                     break;
-                    
+                case 2:
+                	fragment = new ReminderListFragment();
                 default:
                     break;
             }

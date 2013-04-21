@@ -6,7 +6,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import tk.dalang.gaminder.elements.Game;
+import tk.dalang.gaminder.R;
+import tk.dalang.gaminder.elements.IGame;
+import tk.dalang.gaminder.elements.SinaGame;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -99,58 +101,133 @@ public class CalendarUtils {
 		return null;
 	}
 	
-	public static boolean addEvent(Context context, Game game, int minutes, String selectedCalId) {
+	public static boolean addEvent(Context context, IGame game, int minutes,
+			String selectedCalId) {
 		Calendar cal = Calendar.getInstance();
-		String datetime[] = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(game.dt).split(" ");
+		String datetime[] = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
+				.format(game.getDate()).split(" ");
 		String date[] = datetime[0].split("-");
-		String time[] = datetime[1].split(":");   	
-		cal.set(Integer.parseInt(date[0]), Integer.parseInt(date[1])-1, Integer.parseInt(date[2]), Integer.parseInt(time[0]), Integer.parseInt(time[1]), 0);
-		long start = cal.getTime().getTime();   
+		String time[] = datetime[1].split(":");
+		cal.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1,
+				Integer.parseInt(date[2]), Integer.parseInt(time[0]),
+				Integer.parseInt(time[1]), 0);
+		long start = cal.getTime().getTime();
 
 		// event insert
 		ContentValues l_event = new ContentValues();
 		l_event.put(CalendarContract.Events.CALENDAR_ID, selectedCalId);
-		l_event.put(CalendarContract.Events.TITLE, game.guest+" VS "+game.host);
-		l_event.put(CalendarContract.Events.DESCRIPTION, game.chanls);
-		l_event.put(CalendarContract.Events.EVENT_LOCATION, "@"+game.host);
+		l_event.put(CalendarContract.Events.TITLE, game.getGuest() + " VS "
+				+ game.getHost());
+		l_event.put(CalendarContract.Events.DESCRIPTION, game.getChanls());
+		l_event.put(CalendarContract.Events.EVENT_LOCATION, "@" + game.getHost());
 		l_event.put(CalendarContract.Events.DTSTART, start);
-		l_event.put(CalendarContract.Events.DTEND, start + 2*60*60*1000);
+		l_event.put(CalendarContract.Events.DTEND, start + 2 * 60 * 60 * 1000);
 		l_event.put(CalendarContract.Events.ALL_DAY, 0);
-		// status: 0~ undefined; 1~ yes;  2~ no;
+		// status: 0~ undefined; 1~ yes; 2~ no;
 		l_event.put(CalendarContract.Events.SELF_ATTENDEE_STATUS, 1);
-		//status: 0~ tentative; 1~ confirmed; 2~ canceled
+		// status: 0~ tentative; 1~ confirmed; 2~ canceled
 		l_event.put(CalendarContract.Events.STATUS, 1);
-		//0~ false; 1~ true
+		// 0~ false; 1~ true
 		l_event.put(CalendarContract.Events.HAS_ALARM, 1);
 
-//		Uri l_eventUri = CalendarContract.Events.CONTENT_URI;
+		// Uri l_eventUri = CalendarContract.Events.CONTENT_URI;
 		Uri l_eventUri = Uri.parse(eventsPath);
 		TimeZone timeZone = TimeZone.getDefault();
 		l_event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone.getID());
-		Uri l_uri_event = context.getContentResolver().insert(l_eventUri, l_event);
+		Uri l_uri_event = context.getContentResolver().insert(l_eventUri,
+				l_event);
 		if (l_uri_event == null) {
-			Toast.makeText(context.getApplicationContext(), "add event failed", Toast.LENGTH_SHORT).show();		
+			Toast.makeText(context.getApplicationContext(), R.string.add_event_failed,
+					Toast.LENGTH_SHORT).show();
 			return false;
 		}
-		
+
 		// reminder insert
-//		Uri l_reminderUri = CalendarContract.Reminders.CONTENT_URI;
+		// Uri l_reminderUri = CalendarContract.Reminders.CONTENT_URI;
 		Uri l_reminderUri = Uri.parse(remindersPath);
 		ContentValues l_reminder = new ContentValues();
-		l_reminder.put( "event_id", Long.parseLong(l_uri_event.getLastPathSegment()));
-		l_reminder.put( "method", 1 );
-		l_reminder.put( "minutes", minutes );
-		Uri l_uri_reminder = context.getContentResolver().insert(l_reminderUri, l_reminder);
+		l_reminder.put("event_id",
+				Long.parseLong(l_uri_event.getLastPathSegment()));
+		l_reminder.put("method", 1);
+		l_reminder.put("minutes", minutes);
+		Uri l_uri_reminder = context.getContentResolver().insert(l_reminderUri,
+				l_reminder);
 		if (l_uri_reminder == null) {
-			Toast.makeText(context.getApplicationContext(), "add reminder failed", Toast.LENGTH_SHORT).show();		
+			Toast.makeText(context.getApplicationContext(),
+					"add reminder failed", Toast.LENGTH_SHORT).show();
 			return false;
 		}
-		
+
+		game.setIsEvent(true);
+		game.setEventId(Long.parseLong(l_uri_event.getLastPathSegment()));
+		Toast.makeText(context.getApplicationContext(), R.string.add_event_success,
+				Toast.LENGTH_SHORT).show();
+		return true;
+	}
+	
+	public static boolean addEvent(Context context, SinaGame game, int minutes,
+			String selectedCalId) {
+		Calendar cal = Calendar.getInstance();
+		String datetime[] = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US)
+				.format(game.dt).split(" ");
+		String date[] = datetime[0].split("-");
+		String time[] = datetime[1].split(":");
+		cal.set(Integer.parseInt(date[0]), Integer.parseInt(date[1]) - 1,
+				Integer.parseInt(date[2]), Integer.parseInt(time[0]),
+				Integer.parseInt(time[1]), 0);
+		long start = cal.getTime().getTime();
+
+		// event insert
+		ContentValues l_event = new ContentValues();
+		l_event.put(CalendarContract.Events.CALENDAR_ID, selectedCalId);
+		l_event.put(CalendarContract.Events.TITLE, game.guest + " VS "
+				+ game.host);
+		l_event.put(CalendarContract.Events.DESCRIPTION, game.chanls);
+		l_event.put(CalendarContract.Events.EVENT_LOCATION, "@" + game.host);
+		l_event.put(CalendarContract.Events.DTSTART, start);
+		l_event.put(CalendarContract.Events.DTEND, start + 2 * 60 * 60 * 1000);
+		l_event.put(CalendarContract.Events.ALL_DAY, 0);
+		// status: 0~ undefined; 1~ yes; 2~ no;
+		l_event.put(CalendarContract.Events.SELF_ATTENDEE_STATUS, 1);
+		// status: 0~ tentative; 1~ confirmed; 2~ canceled
+		l_event.put(CalendarContract.Events.STATUS, 1);
+		// 0~ false; 1~ true
+		l_event.put(CalendarContract.Events.HAS_ALARM, 1);
+
+		// Uri l_eventUri = CalendarContract.Events.CONTENT_URI;
+		Uri l_eventUri = Uri.parse(eventsPath);
+		TimeZone timeZone = TimeZone.getDefault();
+		l_event.put(CalendarContract.Events.EVENT_TIMEZONE, timeZone.getID());
+		Uri l_uri_event = context.getContentResolver().insert(l_eventUri,
+				l_event);
+		if (l_uri_event == null) {
+			Toast.makeText(context.getApplicationContext(), R.string.add_reminder_failed,
+					Toast.LENGTH_SHORT).show();
+			return false;
+		}
+
+		// reminder insert
+		// Uri l_reminderUri = CalendarContract.Reminders.CONTENT_URI;
+		Uri l_reminderUri = Uri.parse(remindersPath);
+		ContentValues l_reminder = new ContentValues();
+		l_reminder.put("event_id",
+				Long.parseLong(l_uri_event.getLastPathSegment()));
+		l_reminder.put("method", 1);
+		l_reminder.put("minutes", minutes);
+		Uri l_uri_reminder = context.getContentResolver().insert(l_reminderUri,
+				l_reminder);
+		if (l_uri_reminder == null) {
+			Toast.makeText(context.getApplicationContext(),
+					R.string.add_reminder_failed, Toast.LENGTH_SHORT).show();
+			return false;
+		}
+
 		game.isEvent = true;
 		game.eventId = Long.parseLong(l_uri_event.getLastPathSegment());
-		Toast.makeText(context.getApplicationContext(), "add event success", Toast.LENGTH_SHORT).show();		
+		Toast.makeText(context.getApplicationContext(), R.string.add_event_success,
+				Toast.LENGTH_SHORT).show();
 		return true;
-	}  
+	}
 
 	/*delete an event from calendar*/
 	public static boolean deleteEvent(Context context, long eventId) {
@@ -160,10 +237,10 @@ public class CalendarUtils {
 		Uri l_deleteUri = Uri.withAppendedPath(l_eventUri, String.valueOf(eventId));
 		int deleted_rows = context.getContentResolver().delete(l_deleteUri, null, null);
 		if (deleted_rows > 0) {
-			Toast.makeText(context.getApplicationContext(), "delete event success", Toast.LENGTH_SHORT).show();
+			Toast.makeText(context.getApplicationContext(), R.string.delete_event_success, Toast.LENGTH_SHORT).show();
 			return true;
 		} else {
-			Toast.makeText(context.getApplicationContext(), "delete event failed", Toast.LENGTH_SHORT).show();
+			Toast.makeText(context.getApplicationContext(), R.string.delete_event_failed, Toast.LENGTH_SHORT).show();
 			return false;
 		}
 	}  

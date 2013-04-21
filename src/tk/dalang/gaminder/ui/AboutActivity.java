@@ -1,7 +1,3 @@
-/**
- * Copyright (C) 2013 HalZhang
- */
-
 package tk.dalang.gaminder.ui;
 
 import tk.dalang.gaminder.R;

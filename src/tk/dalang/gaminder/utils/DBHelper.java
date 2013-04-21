@@ -14,23 +14,30 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper {
 	
 	private static final String DATABASE_NAME = "gaminder.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	
 	public DBHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
+	
 	@Override
-	public void onCreate(SQLiteDatabase arg0) {
+	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
-		arg0.execSQL("CREATE TABLE IF NOT EXISTS sinagame" +  
+		db.execSQL("CREATE TABLE IF NOT EXISTS sinagame" +  
 	                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, guest NVARCHAR, host NVARCHAR, " +
 	                "dt VARCHAR, type INTEGER, chanls TEXT, evented BOOLEAN, eventid INTEGER)"); 
+		
+		db.execSQL("CREATE TABLE IF NOT EXISTS azhibogame" +  
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, guest NVARCHAR, host NVARCHAR, " +
+                "dt VARCHAR, type INTEGER, chanls TEXT, evented BOOLEAN, eventid INTEGER)"); 
 	}
 
 	@Override
-	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
+	public void onUpgrade(SQLiteDatabase db,int oldVersion,int newVersion) {
 		// TODO Auto-generated method stub
-		arg0.execSQL("ALTER TABLE sinagame ADD COLUMN other STRING");  
+		db.execSQL("CREATE TABLE IF NOT EXISTS azhibogame" +  
+                "(_id INTEGER PRIMARY KEY AUTOINCREMENT, guest NVARCHAR, host NVARCHAR, " +
+                "dt VARCHAR, type INTEGER, chanls TEXT, evented BOOLEAN, eventid INTEGER)");
 	}
 
 }

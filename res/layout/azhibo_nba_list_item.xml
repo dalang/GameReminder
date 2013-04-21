@@ -59,12 +59,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="fill_horizontal"
         android:textColor="@color/holo_blue_dark"
+        android:ems="6"
+        android:ellipsize="end"
         android:lines="3"
-        android:textSize="25px" />
+        android:textSize="20px" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
+        android:layout_weight="1"
         android:layout_marginRight="15dp"
         android:orientation="horizontal" >
 

@@ -8,7 +8,8 @@
     <string name="seekbar_hint">比赛开始前%1$s提醒我</string>
 
     <string-array name="section_titles">
-        <item >新浪NBA数据</item>
+        <item >新浪数据</item>
+        <item >A直播数据</item>
         <item >已设提醒</item>
     </string-array>
     
@@ -78,5 +79,10 @@
     <!-- reminder dialog -->
     <string name="reminder_dialog_title">设置提醒</string>
     <string name="add_event">添加进日历</string>
+    <string name="add_event_success">添加日历成功</string>
+    <string name="add_event_failed">添加日历失败</string>
+    <string name="add_reminder_failed">添加提醒失败</string>
+    <string name="delete_event_success">删除日历成功</string>
+    <string name="delete_event_failed">删除日历失败</string>
     
 </resources>

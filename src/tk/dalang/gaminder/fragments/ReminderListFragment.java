@@ -1,6 +1,7 @@
 package tk.dalang.gaminder.fragments;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import tk.dalang.gaminder.R;
@@ -14,6 +15,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -194,18 +196,23 @@ public class ReminderListFragment extends AbsBaseListFragment {
 			if (mType == TYPE_REFRESH && mReminderData.size() > 0) {
 				mReminderData.clear();
 			}
-			
-			Cursor c = mDBMgr.queryForEvents();
+			String tables[] = {"sinagame", "azhibogame"};
 			boolean flag = false;
-			while (c.moveToNext()) {
-			    long calendarEventID = c.getLong(c.getColumnIndex("eventid"));
-			    EventInfo eInfo = CalendarUtils.getEvent(getActivity(), calendarEventID);
-			    if (eInfo != null) {
-			    	mReminderData.add(eInfo);
-			    	flag = true;
-			    }
-			}
 
+			for (String table : tables) {
+				Cursor c = mDBMgr.queryForEvents(table);
+				while (c.moveToNext()) {
+					long calendarEventID = c.getLong(c
+							.getColumnIndex("eventid"));
+					EventInfo eInfo = CalendarUtils.getEvent(getActivity(),
+							calendarEventID);
+					if (eInfo != null) {
+						mReminderData.add(eInfo);
+						flag = true;
+					}
+				}
+			}
+			Collections.sort(mReminderData);
 			return flag;
 		}
 
@@ -283,7 +290,20 @@ public class ReminderListFragment extends AbsBaseListFragment {
 			
 			EventInfo eInfo = mReminderData.get(arg0);
 			holder.titleTxt.setText(eInfo.title);
-			holder.descTxt.setText(eInfo.description.replaceAll("\n", "  "));
+			if (eInfo.description.contains("www.")) {
+				String source = "";
+				String chanls[] = eInfo.description.split(";");
+				for (String chanl : chanls) {
+					String chanldetails[] = chanl.split(":");
+					if (chanldetails.length == 2) {
+						source += "<a target=\"_blank\" href=\"http://" + chanldetails[1] + "\">" + 
+								chanldetails[0] + "</a>  ";
+					}
+				}
+				holder.descTxt.setText(Html.fromHtml(source));
+			} else {
+				holder.descTxt.setText(eInfo.description.replaceAll("\n", "  "));
+			}
 			holder.datetimeTxt.setText(eInfo.startDT);
 			int rTime = Integer.parseInt(eInfo.reminderTime);
 			String rTimeStr = "";

@@ -11,12 +11,18 @@ import java.util.Locale;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.Parser;
+import org.htmlparser.filters.AndFilter;
+import org.htmlparser.filters.HasAttributeFilter;
+import org.htmlparser.filters.HasParentFilter;
 import org.htmlparser.filters.TagNameFilter;
+import org.htmlparser.tags.LinkTag;
+import org.htmlparser.util.NodeIterator;
 import org.htmlparser.util.NodeList;
 
 import tk.dalang.gaminder.R;
-import tk.dalang.gaminder.elements.Game;
-
+import tk.dalang.gaminder.elements.AzhiboGame;
+import tk.dalang.gaminder.elements.IGame;
+import tk.dalang.gaminder.elements.SinaGame;
 import android.util.Log;
 
 /**
@@ -69,8 +75,8 @@ public class WebParserUtils {
 				sTotalString += sCurrentLine;
 			}
 			
-//			System.out.println(sTotalString);
-//			System.out.println("====================");
+			System.out.println(sTotalString);
+			System.out.println("====================");
 			String testText = extractText(sTotalString);
 			System.out.println(testText);
 		} catch (Exception e) {
@@ -78,7 +84,63 @@ public class WebParserUtils {
 		}
 	}
 
-	public static List<Game> parserSinaHtml(String resource) throws Exception {
+	public static List<IGame> parserAzhiboHtml(String resource) throws Exception {
+		List<IGame> retList = new ArrayList<IGame>();
+		Parser myParser = new Parser(resource);
+		myParser.setEncoding("GBK");
+		
+		NodeFilter filter=new AndFilter(new AndFilter(new TagNameFilter("div"), new HasAttributeFilter("class", "box")),new HasParentFilter(new AndFilter(new TagNameFilter("div"), new HasAttributeFilter("id", "contentCanvas")))); 
+		NodeList nodeList = myParser.extractAllNodesThatMatch(filter);
+		
+		for (NodeIterator e = nodeList.elements(); e.hasMoreNodes();) {
+			Node node = e.nextNode();
+			String dateStr;
+			NodeList dateList = new NodeList();
+			node.collectInto(dateList, new AndFilter(new TagNameFilter("h2"), new HasAttributeFilter("class", "box-title")));
+			dateStr = dateList.elementAt(0).toPlainTextString();
+			dateStr = dateStr.replace('月', '-');
+			dateStr = dateStr.replace('日', ' ');
+			dateStr = dateStr.split(" ")[0];
+			System.out.println("date : " + dateStr);
+			NodeList liList = new NodeList();
+			node.collectInto(liList, new TagNameFilter("li"));
+			
+			if (liList.size() == 0)
+				break;
+			// AzhiboGame begin
+			for (NodeIterator ee = liList.elements(); ee.hasMoreNodes();) {
+				Node nodee = ee.nextNode();
+				NodeList detailList = nodee.getChildren();
+				String time = detailList.elementAt(1).toPlainTextString().trim();
+				String NBA = detailList.elementAt(3).toPlainTextString().trim();
+				String []teams = detailList.elementAt(5).toPlainTextString().trim().split("\\s*-\\s*");
+				Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA).parse("2013-" + dateStr + " " + time);
+				AzhiboGame game = new AzhiboGame(teams[0], teams[1], date, 4);
+
+//				System.out.println(teams.toString());
+				for (int i = 5; i < detailList.size(); i++) {
+					Node nodeee = detailList.elementAt(i);
+					if (! nodeee.toPlainTextString().trim().isEmpty()) {
+						System.out.println("*****" + nodeee.toPlainTextString().length() + " |" + i + "|" + nodeee.toPlainTextString());
+						if (nodeee instanceof LinkTag  && i > 5) {
+							LinkTag linkTag = (LinkTag) nodeee;
+							System.out.println("link : " + linkTag.getLink());
+							game.addChanl(nodeee.toPlainTextString().trim(), linkTag.getLink());
+						}
+						
+						if (nodeee.toPlainTextString().trim().equals("比分直播")) {
+							break;
+						}
+					}
+				}
+				retList.add(game);
+				//AzhiboGame end
+			}	
+		}
+		return retList;
+	}
+		
+	public static List<IGame> parserSinaHtml(String resource) throws Exception {
 		System.out.println(resource);
 		Parser myParser = new Parser(resource);
 		myParser.setEncoding("GBK");
@@ -87,9 +149,6 @@ public class WebParserUtils {
 		NodeList nodeList = myParser.extractAllNodesThatMatch(filter);
 		Node node = nodeList.elementAt(3);
 
-//		System.out.println(node.toPlainTextString());
-//		System.out.println("==============");
-		
 		String rawdata[] = convert2Array(node.toPlainTextString());
 		if (rawdata.length > 0)
 			return convert2List(rawdata);
@@ -119,9 +178,9 @@ public class WebParserUtils {
 		return splitedstr;
 	}
 	
-	private static List<Game> convert2List(String [] nbadata) {
-		List<Game> list = new ArrayList<Game>();
-		Game game;
+	private static List<IGame> convert2List(String [] nbadata) {
+		List<IGame> list = new ArrayList<IGame>();
+		SinaGame game;
 
 		Log.d("SOURCE string length: ", ""+nbadata.length);
 
@@ -164,7 +223,7 @@ public class WebParserUtils {
 					type = 0;
 				try {
 					date = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).parse(dtstr);
-					game = new Game(nbadata[i+4], nbadata[i+5], date, type, chanls);
+					game = new SinaGame(nbadata[i+4], nbadata[i+5], date, type, chanls);
 					list.add(game);
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
@@ -245,6 +304,7 @@ public class WebParserUtils {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		testHtml();
+		System.out.println("test azhibo");
+		//testHtml();
 	}
 }

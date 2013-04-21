@@ -5,10 +5,13 @@ GameReminder is an Android app for reminding you sport games broadcasted on TV.
 
 It crawls sport game TV broadcasting info from web, and reminder you through google's calendar.
 
-Nowadays, GameReminder only support display game info from SINA.com NBA channel. It will add more data sources later.
+Nowadays, GameReminder support display game info from SINA.com NBA channel and azhibo.com NBA channel. It will add more data sources later.
 
-[APK download](http://github.com/dalang/gamereminder/raw/master/GameReminder.apk)
+[APK download](http://github.com/dalang/gamereminder/raw/master/GameReminder.apk) v2.1
 
+##ChangeLog
+###v2.1
+add game info data source from [azhibo.com](http://www.azhibo.com/nbazhibo)
 ##Notice
 
 Since the reminding functionality is based on google calendar, **an available google calendar account will be needed** if you want to the reminding functionality work well.
