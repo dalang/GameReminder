@@ -7,7 +7,7 @@ It crawls sport game TV broadcasting info from web, and reminder you through goo
 
 Nowadays, GameReminder support display game info from SINA.com NBA channel and azhibo.com NBA channel. It will add more data sources later.
 
-[APK download](http://github.com/dalang/gamereminder/raw/master/GameReminder.apk) v2.1
+[APK download](http://github.com/dalang/gamereminder/raw/master/GameReminder.apk) v2.1.1
 
 ##ChangeLog
 ###v2.1.1

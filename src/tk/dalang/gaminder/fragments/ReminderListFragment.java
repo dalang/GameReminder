@@ -78,6 +78,7 @@ public class ReminderListFragment extends AbsBaseListFragment {
             	mSqlTask = new SqlTask(SqlTask.TYPE_REFRESH);
             	mSqlTask.execute();
                 getPullToRefreshListView().setRefreshing(true);
+                ((MainActivity)getActivity()).setReminderChanged(false);
             } else if (mReminderData.size() == 0) {
             	Toast.makeText(getActivity(), R.string.error_noreminder, Toast.LENGTH_LONG).show();
             }
