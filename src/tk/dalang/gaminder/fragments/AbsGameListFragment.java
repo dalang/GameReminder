@@ -189,7 +189,6 @@ public abstract class AbsGameListFragment extends AbsBaseListFragment {
                 EasyTracker.getTracker().sendException("AbsTask", e, false);
                 return false;
             }
-
         }
         
         @Override
