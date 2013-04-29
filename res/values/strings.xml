@@ -31,6 +31,8 @@
     </string-array>
     
     <string name="error">哎呀，出错了!</string>
+    <string name="error_noazhibo">哎呀，获取A直播出错了!</string>
+    <string name="error_noreminder">目前还未设置提醒!</string>
     <string name="error_noemailapp">不好意思，你未安装邮件客户端，无法通过邮件反馈。您可以通过PC发送反馈邮件到【dalang1987@gmail.com】。非常感谢!</string>
     
     <!-- title string -->

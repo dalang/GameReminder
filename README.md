@@ -10,6 +10,12 @@ Nowadays, GameReminder support display game info from SINA.com NBA channel and a
 [APK download](http://github.com/dalang/gamereminder/raw/master/GameReminder.apk) v2.1
 
 ##ChangeLog
+###v2.1.1
+* Pager "已设提醒" 数据empty时，listview一直现实刷新图标
+* 从Parger1切换到Pager2时，会弹出"哎呀，出错了"
+* 添加、删除提醒后，Pager"已设提醒"自动更新
+* Pager进行pulldown更新时，listview会只显示一个item
+
 ###v2.1
 add game info data source from [azhibo.com](http://www.azhibo.com/nbazhibo)
 ##Notice

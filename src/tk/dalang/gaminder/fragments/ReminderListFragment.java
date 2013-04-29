@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import tk.dalang.gaminder.R;
+import tk.dalang.gaminder.ui.MainActivity;
 import tk.dalang.gaminder.utils.CalendarUtils;
 import tk.dalang.gaminder.utils.DBManager;
 import tk.dalang.gaminder.utils.DateUtils;
@@ -48,6 +49,7 @@ public class ReminderListFragment extends AbsBaseListFragment {
     private ReminderAdapter mAdapter;
     private SqlTask mSqlTask;
 	private List<EventInfo> mReminderData = new ArrayList<EventInfo>();
+    private boolean m_iAmVisible = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,23 @@ public class ReminderListFragment extends AbsBaseListFragment {
         	mSqlTask = new SqlTask(SqlTask.TYPE_REFRESH);
         	mSqlTask.execute();
             getPullToRefreshListView().setRefreshing(true);
+        }
+    }
+    
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser == true) {
+            m_iAmVisible = true;
+            if (mSqlTask == null && ((MainActivity)getActivity()).getReminderChanged()) {
+            	mSqlTask = new SqlTask(SqlTask.TYPE_REFRESH);
+            	mSqlTask.execute();
+                getPullToRefreshListView().setRefreshing(true);
+            } else if (mReminderData.size() == 0) {
+            	Toast.makeText(getActivity(), R.string.error_noreminder, Toast.LENGTH_LONG).show();
+            }
+        } else if (isVisibleToUser == false) {
+        	m_iAmVisible = false;
         }
     }
     
@@ -221,8 +240,15 @@ public class ReminderListFragment extends AbsBaseListFragment {
         	if (result) {
                 onDataFirstLoadComplete();
                 mAdapter.notifyDataSetChanged();
+                if (getPullToRefreshListView().getVisibility() == View.GONE)
+                    getPullToRefreshListView().setVisibility(View.VISIBLE);
+
             } else {
-                Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_LONG).show();
+            	Log.d(LOG_TAG, "no reminder is found");
+            	if (m_iAmVisible) {
+            		Toast.makeText(getActivity(), R.string.error_noreminder, Toast.LENGTH_LONG).show();
+            	}
+                getPullToRefreshListView().setVisibility(View.GONE);
             }
         	
             mSqlTask = null;

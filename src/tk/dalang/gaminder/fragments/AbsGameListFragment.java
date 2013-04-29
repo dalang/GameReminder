@@ -7,6 +7,7 @@ import java.util.List;
 
 import tk.dalang.gaminder.R;
 import tk.dalang.gaminder.elements.IGame;
+import tk.dalang.gaminder.ui.MainActivity;
 import tk.dalang.gaminder.utils.CalendarUtils;
 import tk.dalang.gaminder.utils.DBManager;
 import tk.dalang.gaminder.utils.DateUtils;
@@ -102,12 +103,6 @@ public abstract class AbsGameListFragment extends AbsBaseListFragment {
     protected abstract String getUrl();
     protected abstract String getTableName();
 
-    @Override
-    protected void onPullUpListViewRefresh(PullToRefreshListView refreshListView) {
-        super.onPullDownListViewRefresh(refreshListView);
-        EasyTracker.getTracker().sendEvent("ui_action", "pull_up_list_view_refresh",
-                "sina_list_fragmentt_pull_up_list_view_refresh", 0L);
-    }
 
     protected class SQLiteEventTask extends AsyncTask<IGame, Void, Boolean> {
         private DBManager mDBMgr = null;
@@ -132,6 +127,7 @@ public abstract class AbsGameListFragment extends AbsBaseListFragment {
         protected void onPostExecute(Boolean result) {
             mDBMgr.closeDB();
             mDBMgr = null;
+			((MainActivity)getActivity()).setReminderChanged(true);
             super.onPostExecute(result);
         }
 	}
@@ -157,9 +153,6 @@ public abstract class AbsGameListFragment extends AbsBaseListFragment {
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-				if (mType == TYPE_REFRESH && mNbaData.size() > 0) {
-					mNbaData.clear();
-				}
 				Log.d(LOG_TAG, "start parse task");
 				if (mDBMgr.isEmpty(getTableName())) {
 					Log.d(LOG_TAG, params[0]);
@@ -172,6 +165,8 @@ public abstract class AbsGameListFragment extends AbsBaseListFragment {
 		        	Date dt = mDBMgr.timeStamp(getTableName());
 		        	SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(getActivity());
 			    	String autoFresh =pre.getString(getResources().getString(R.string.pref_key_auto_fresh), "0");
+			    	if (autoFresh.equals(""))
+			    		autoFresh = "0";
 			    	int int_autoFresh = Integer.parseInt(autoFresh);
 			    	Log.d(LOG_TAG, "max date in sqlite:" + dt.toString());
 			    	dt.setDate(dt.getDate() - int_autoFresh);
@@ -184,6 +179,9 @@ public abstract class AbsGameListFragment extends AbsBaseListFragment {
 					}
 				}
 				// TODO make sure db insert will not add redundant item
+				if (mType == TYPE_REFRESH && mNbaData.size() > 0) {
+					mNbaData.clear();
+				}
 				mDBMgr.query(getTableName(), mNbaData);
                 return true;
             } catch (Exception e) {

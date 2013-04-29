@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.widget.Toast;
 
 import com.viewpagerindicator.TitlePageIndicator;
@@ -31,6 +32,8 @@ public class MainActivity extends BaseFragmentActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private Intent mFeedbackEmailIntent;
+    
+	private boolean reminderChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,6 @@ public class MainActivity extends BaseFragmentActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         TitlePageIndicator indicator = (TitlePageIndicator) findViewById(R.id.titles);
         indicator.setViewPager(mViewPager);
-
         mFeedbackEmailIntent = createEmailIntent();
 
     }
@@ -125,4 +127,12 @@ public class MainActivity extends BaseFragmentActivity {
 
     }
 
+
+    public void setReminderChanged(boolean flag) {
+    	this.reminderChanged = flag;
+    }
+
+    public boolean getReminderChanged() {
+    	return this.reminderChanged;
+    }
 }

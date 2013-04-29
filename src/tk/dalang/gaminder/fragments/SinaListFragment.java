@@ -5,51 +5,18 @@
 package tk.dalang.gaminder.fragments;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import tk.dalang.gaminder.R;
-import tk.dalang.gaminder.elements.Game;
 import tk.dalang.gaminder.elements.IGame;
-import tk.dalang.gaminder.elements.SinaGame;
-import tk.dalang.gaminder.fragments.AbsGameListFragment.SQLiteEventTask;
-import tk.dalang.gaminder.fragments.AbsGameListFragment.ViewHolder;
 import tk.dalang.gaminder.utils.CalendarUtils;
-import tk.dalang.gaminder.utils.DBManager;
-import tk.dalang.gaminder.utils.DateUtils;
-import tk.dalang.gaminder.utils.MyCalendar;
 import tk.dalang.gaminder.utils.WebParserUtils;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.analytics.tracking.android.EasyTracker;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.infteh.comboseekbar.ComboSeekBar;
 
 /**
  * GameReminder
